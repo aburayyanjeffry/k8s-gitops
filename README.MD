@@ -198,3 +198,68 @@ Username: admin
 Password: <output from command above>
 ```
 
+# 11. Create 
+1. Click **+ NEW APP**
+
+2. Enter the following details
+- **Application Name** = nginx
+- **Project Name** = default
+- **SYNC POLICY** = Automatic
+- **AUTO-CREATE NAMESPACE** checked
+- Repository URL = https://github.com/aburayyanjeffry/k8s-gitops ( change to your repository at github )
+- Path = nginx
+- Cluster URL = https://kubernetes.default.svc ( Docker desktop K8s )
+- Namespace = nginx
+
+3. Click create ( top left ) and wait for the application status to be **Healthy** and **Synced**
+
+4. Click the applicaiton to see the detail
+
+5. Verify the application at Kubernetes
+
+```bash
+kubectl get all -n nginx
+```
+
+Sample running output
+```bash
+NAME                         READY   STATUS    RESTARTS   AGE
+pod/nginx-67646445cb-7dq7m   1/1     Running   0          97s
+
+NAME            TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+service/nginx   NodePort   10.96.89.48   <none>        80:30707/TCP   97s
+
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   1/1     1            1           97s
+
+NAME                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-67646445cb   1         1         1       97s
+```
+
+Port forward the nginx
+```bash
+kubectl port-forward svc/nginx 8081:80 -n nginx
+```
+
+Open browser:
+
+https://localhost:8081
+
+# 12. Update the replica to 2 to see gitops in action
+
+edit nginx/deployment.yml and change the replica to 2
+```yaml
+spec:
+  replicas: 2
+```
+
+commit and push
+```bash
+git commit -a -m "update replicas to 2"
+git push
+```
+
+see the AgroCD will redeploy the nginx with 2 replica
+
+
+
