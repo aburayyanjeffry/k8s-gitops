@@ -5,9 +5,7 @@ Introduction to GitOps for Kubernetes using Argo CD and the Bitnami NGINX Helm c
 This tutorial will cover:
 
 - Installing Kubernetes locally with Docker Desktop
-- Installing Helm
 - Installing Argo CD
-- Using the official Bitnami NGINX Helm chart
 - Deploying applications using GitOps
 - Syncing deployments automatically with Argo CD
 - Updating configuration through Git and letting Argo CD redeploy automatically
@@ -17,7 +15,7 @@ This tutorial will cover:
 # Architecture
 
 ```text
-Git Repository
+ Git Repository
        │
        ▼
     Argo CD
@@ -26,7 +24,7 @@ Git Repository
  Kubernetes Cluster
        │
        ▼
- Bitnami NGINX
+     NGINX
 ```
 
 Whenever changes are pushed to Git, Argo CD detects the changes and synchronizes the Kubernetes cluster automatically.
@@ -209,7 +207,7 @@ Password: <output from command above>
 - Repository URL = https://github.com/aburayyanjeffry/k8s-gitops ( change to your repository at github )
 - Path = nginx
 - Cluster URL = https://kubernetes.default.svc ( Docker desktop K8s )
-- Namespace = nginx
+- Namespace = nginx-saya
 
 3. Click create ( top left ) and wait for the application status to be **Healthy** and **Synced**
 
@@ -218,7 +216,7 @@ Password: <output from command above>
 5. Verify the application at Kubernetes
 
 ```bash
-kubectl get all -n nginx
+kubectl get all -n nginx-saya
 ```
 
 Sample running output
@@ -238,7 +236,7 @@ replicaset.apps/nginx-67646445cb   1         1         1       97s
 
 Port forward the nginx
 ```bash
-kubectl port-forward svc/nginx 8081:80 -n nginx
+kubectl port-forward svc/nginx 8081:80 -n nginx-saya
 ```
 
 Open browser:
@@ -264,16 +262,17 @@ see the AgroCD will redeploy the nginx with 2 replica
 # 13. Demonstrate GitOps in Action
 
 Modify the deployment replica count.
-```yaml
+```
 nginx/deployment.yml
+```
 
 Change:
-
+```yaml
 spec:
   replicas: 1
-
+```
 To:
-
+```yaml
 spec:
   replicas: 2
 ```
