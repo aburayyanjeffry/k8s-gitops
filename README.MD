@@ -1,4 +1,4 @@
-# gitops-101
+# k8s-gitops part 1
 
 Introduction to GitOps for Kubernetes using Argo CD and the Bitnami NGINX Helm chart on a local Kubernetes cluster running in Docker Desktop on a MacBook Pro M1.
 
