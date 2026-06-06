@@ -261,5 +261,75 @@ git push
 
 see the AgroCD will redeploy the nginx with 2 replica
 
+# 13. Demonstrate GitOps in Action
 
+Modify the deployment replica count.
+```yaml
+nginx/deployment.yml
 
+Change:
+
+spec:
+  replicas: 1
+
+To:
+
+spec:
+  replicas: 2
+```
+
+Commit and push:
+```bash
+git add .
+git commit -m "Increase replica count to 2"
+git push
+```
+Argo CD will detect the change and automatically synchronize the cluster.
+
+Verify:
+```bash
+kubectl get pods -n nginx
+```
+
+You should now see two NGINX pods running.
+
+# 14. Update the ConfigMap
+
+Edit the NGINX HTML content inside the ConfigMap and push the changes.
+
+Argo CD will successfully synchronize the ConfigMap update.
+
+However, the running NGINX Pods may continue serving the previous content.
+
+This is expected because updating a ConfigMap does not automatically trigger a Deployment rollout.
+
+## Option 1: Restart from Argo CD
+Open the application
+Select the Deployment resource
+Click Actions
+Click Restart
+
+### Option 2: Restart Using kubectl
+```bash
+kubectl rollout restart deployment/nginx -n nginx
+```
+
+Monitor the rollout:
+```bash
+kubectl rollout status deployment/nginx -n nginx
+```
+
+Once the Pods restart, the updated content will be served.
+
+# Conclusion
+
+Congratulations! You have successfully:
+
+Installed Kubernetes locally
+Installed Argo CD
+Connected Kubernetes to GitHub
+Implemented a GitOps workflow
+Performed automatic deployments through Git commits
+Managed application updates using Argo CD
+
+You now have a working GitOps lab that can be expanded with Helm, Kustomize, multiple environments, and production-grade deployment practices.
