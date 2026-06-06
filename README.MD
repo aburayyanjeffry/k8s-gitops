@@ -243,23 +243,7 @@ Open browser:
 
 https://localhost:8081
 
-# 12. Update the replica to 2 to see gitops in action
-
-edit nginx/deployment.yml and change the replica to 2
-```yaml
-spec:
-  replicas: 2
-```
-
-commit and push
-```bash
-git commit -a -m "update replicas to 2"
-git push
-```
-
-see the AgroCD will redeploy the nginx with 2 replica
-
-# 13. Demonstrate GitOps in Action
+# 12. Demonstrate GitOps in Action
 
 Modify the deployment replica count.
 ```
@@ -292,7 +276,7 @@ kubectl get pods -n nginx
 
 You should now see two NGINX pods running.
 
-# 14. Update the ConfigMap
+# 13. Update the ConfigMap
 
 Edit the NGINX HTML content inside the ConfigMap and push the changes.
 
@@ -330,5 +314,3 @@ Connected Kubernetes to GitHub
 Implemented a GitOps workflow
 Performed automatic deployments through Git commits
 Managed application updates using Argo CD
-
-You now have a working GitOps lab that can be expanded with Helm, Kustomize, multiple environments, and production-grade deployment practices.
